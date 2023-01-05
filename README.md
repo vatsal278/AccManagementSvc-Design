@@ -32,7 +32,24 @@ Response Body(json):
 ```
 
 ## Create Account
-This endpoint is used to create a new account against account number and once its done we will notify the user mgmt svc through msg queue. This endpoint will get hit from usermanagement service through msg queue.
+This endpoint is used to create a new account in a Relational DB with `account_number` as the `primary key` and as a `int`,`user_id`as `string` and it should be `unique`, `income` and `spends` as `decimal`,`created_at` and `updated_at` as `timestamp` `active_services` and `inactive_services` as `json` and once its done we will notify the user mgmt svc through msg queue. This endpoint will get hit from usermanagement service through msg queue.
+
+DbSchema:
+```
++-------------------+---------------+------+-----+-------------------+-----------------------------------------------+
+| Field             | Type          | Null | Key | Default           | Extra                                         |
++-------------------+---------------+------+-----+-------------------+-----------------------------------------------+
+| user_id           | varchar(255)  | NO   | UNI | NULL              |                                               |
+| account_num       | int           | NO   | PRI | NULL              | auto_increment                                |
+| income            | decimal(18,2) | YES  |     | 0.00              |                                               |
+| spends            | decimal(18,2) | YES  |     | 0.00              |                                               |
+| created_at        | timestamp     | NO   |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED                             |
+| updated_at        | timestamp     | NO   |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED on update CURRENT_TIMESTAMP |
+| active_services   | json          | NO   |     | json_object()     | DEFAULT_GENERATED                             |
+| inactive_services | json          | NO   |     | json_object()     | DEFAULT_GENERATED                             |
++-------------------+---------------+------+-----+-------------------+-----------------------------------------------+
+```
+
 #### Specification:
 Method: `POST`
 
