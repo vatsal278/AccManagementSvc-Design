@@ -2,6 +2,25 @@
 
 ## AccManagementSvc Endpoints
 
+## Create Account
+This endpoint is used to create a new account in a Relational DB with `account_number` as the `primary key` and as a `int`,`user_id`as `string` and it should be `unique`, `income` and `spends` as `decimal`,`created_at` and `updated_at` as `timestamp` `active_services` and `inactive_services` as `json` and once its done we will notify the user mgmt svc through msg queue. This endpoint will get hit from usermanagement service through msg queue.
+
+DbSchema:
+```
++-------------------+---------------+------+-----+-------------------+-----------------------------------------------+
+| Field             | Type          | Null | Key | Default           | Extra                                         |
++-------------------+---------------+------+-----+-------------------+-----------------------------------------------+
+| user_id           | varchar(255)  | NO   | UNI | NULL              |                                               |
+| account_num       | int           | NO   | PRI | NULL              | auto_increment                                |
+| income            | decimal(18,2) | YES  |     | 0.00              |                                               |
+| spends            | decimal(18,2) | YES  |     | 0.00              |                                               |
+| created_at        | timestamp     | NO   |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED                             |
+| updated_at        | timestamp     | NO   |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED on update CURRENT_TIMESTAMP |
+| active_services   | json          | NO   |     | json_object()     | DEFAULT_GENERATED                             |
+| inactive_services | json          | NO   |     | json_object()     | DEFAULT_GENERATED                             |
++-------------------+---------------+------+-----+-------------------+-----------------------------------------------+
+```
+
 ## Account Summary
 A user hits this endpoint in order to view the details of their account. They can view details like the services that are available and services that theywant to subscribe to.
 There will be jwt token containing userid in cookie
@@ -29,25 +48,6 @@ Response Body(json):
     "available_services": ["<list of all services that user has not subscribed to but are available for subscription>",]
   }
 }
-```
-
-## Create Account
-This endpoint is used to create a new account in a Relational DB with `account_number` as the `primary key` and as a `int`,`user_id`as `string` and it should be `unique`, `income` and `spends` as `decimal`,`created_at` and `updated_at` as `timestamp` `active_services` and `inactive_services` as `json` and once its done we will notify the user mgmt svc through msg queue. This endpoint will get hit from usermanagement service through msg queue.
-
-DbSchema:
-```
-+-------------------+---------------+------+-----+-------------------+-----------------------------------------------+
-| Field             | Type          | Null | Key | Default           | Extra                                         |
-+-------------------+---------------+------+-----+-------------------+-----------------------------------------------+
-| user_id           | varchar(255)  | NO   | UNI | NULL              |                                               |
-| account_num       | int           | NO   | PRI | NULL              | auto_increment                                |
-| income            | decimal(18,2) | YES  |     | 0.00              |                                               |
-| spends            | decimal(18,2) | YES  |     | 0.00              |                                               |
-| created_at        | timestamp     | NO   |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED                             |
-| updated_at        | timestamp     | NO   |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED on update CURRENT_TIMESTAMP |
-| active_services   | json          | NO   |     | json_object()     | DEFAULT_GENERATED                             |
-| inactive_services | json          | NO   |     | json_object()     | DEFAULT_GENERATED                             |
-+-------------------+---------------+------+-----+-------------------+-----------------------------------------------+
 ```
 
 #### Specification:
